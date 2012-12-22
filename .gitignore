@@ -33,3 +33,10 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+*.swp
+
+# Mac OS X
+.DS_Store
+
+# Personal information
+python/database.py
