@@ -10,6 +10,10 @@ def index():
 def hello():
   return "Hello World!"
 
+@app.route("/test")
+def hello():
+  return "Test!"
+
 
 if __name__ == "__main__":
   # Bind to PORT if defined, otherwise default to 5000.
