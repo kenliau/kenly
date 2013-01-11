@@ -24,17 +24,14 @@
 
         <div class="center-container">
 
-            <h1> Enter the URL you want to be ken.lified ! </h1>
+            <h1> {{ result }}  </h1>
 
-            <form action="{{ url_for('add_urls') }}" method="post">
-                <label class="url-label">
-                    URL: 
-                    <input type="text" name="url" class="input-large">
-                </label>
-                
-                <input type="submit" class="btn btn-success submit-btn">
+            <div>
+                <h2> 
+                    {{ url }} 
+                </h2>
+            </div>
 
-            </form>
         </div>
 
         <hr>
