@@ -149,6 +149,9 @@ def get_server_status_code(url):
         return None
     except httplib.HTTPException:
         return None
+    except httplib.ImproperConnectionState:
+        print 'here it is'
+        return None
 
 def check_url(url):
     """
