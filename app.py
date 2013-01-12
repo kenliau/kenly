@@ -176,7 +176,6 @@ def check_url(url):
     good_codes = [httplib.OK, httplib.FOUND, httplib.MOVED_PERMANENTLY]
     #print 'url is ' + url
     #sys.stdout.flush()
-    sys.stdout.flush("hi")
     status = get_server_status_code(url)
     print status
     sys.stdout.flush()
