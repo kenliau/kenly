@@ -38,8 +38,8 @@ def add_urls():
         else:
             user_url = 'http://' + user_url
         valid_url = check_url(user_url)
-        print 'url is ' + user_url + ' and it is ' + valid_url
-        sys.stdout.flush()
+        ##print 'url is ' + user_url + ' and it is ' + valid_url
+        #sys.stdout.flush()
 
         if valid_url == False:
             broken_url = True
@@ -177,6 +177,9 @@ def check_url(url):
     #print 'url is ' + url
     #sys.stdout.flush()
     status = get_server_status_code(url)
+    #print 'status ' + status
+    #sys.stdout.flush()
+
     return status in good_codes
 
 
