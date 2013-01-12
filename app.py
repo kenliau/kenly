@@ -149,6 +149,8 @@ def get_server_status_code(url):
         print 'dos'
         sys.stdout.flush()
         conn.request('HEAD', path)
+        print 'tres'
+        sys.stdout.flush()
         return conn.getresponse().status
     except StandardError:
         return None
