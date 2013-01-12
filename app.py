@@ -180,7 +180,7 @@ def check_url(url):
     print 'status ' + status
     sys.stdout.flush()
 
-    return get_server_status_code(url) in good_codes
+    return status in good_codes
 
 
 if __name__ == "__main__":
