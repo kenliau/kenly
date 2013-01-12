@@ -20,7 +20,7 @@ hotness_dict = {}
 
 app = Flask(__name__)
 app.config.from_object(__name__)
-app.config['SECRET_KEY'] = admin.SECRET_KEY
+app.config['SECRET_KEY'] = os.environ['secret_key']
 
 @app.route("/")
 def index():
@@ -79,9 +79,9 @@ def redirection(redirect_id):
 def login():
     error = None
     if request.method == 'POST':
-        if request.form['username'] != admin.username:
+        if request.form['username'] != os.environ['username']:
             error = 'Invalid username'
-        elif request.form['password'] != admin.password:
+        elif request.form['password'] != os.environ['password']:
             error = 'Invalid password'
         else:
             session['logged_in'] = True
