@@ -38,8 +38,8 @@ def add_urls():
         else:
             user_url = 'http://' + user_url
         valid_url = check_url(user_url)
-        print 'url is ' + user_url + ' and it is ' + valid_url
-        sys.stdout.flush()
+        ##print 'url is ' + user_url + ' and it is ' + valid_url
+        #sys.stdout.flush()
 
         if valid_url == False:
             broken_url = True
@@ -118,7 +118,7 @@ def random_characters():
     n = random.choice('1234567')
     return ''.join(random.choice(string.letters) for i in range(int(n)))
 
-'''
+"""
 def init_db():
     with closing(connect_db()) as db:
         with app.open_resource('schema.sql') as f:
@@ -136,7 +136,7 @@ def before_request():
 def teardown_request(exception):
     if hasattr(g, 'db'):
         g.db.close()
-'''
+"""
 
 def get_server_status_code(url):
     """
@@ -145,26 +145,26 @@ def get_server_status_code(url):
     """
     # http://stackoverflow.com/questions/1140661
     host, path = urlparse.urlparse(url)[1:3]    # elems [1] and [2]
-    print 'host ' + host
-    print 'path ' + path
-    sys.stdout.flush()
+    #print 'host ' + host
+    #print 'path ' + path
+    #sys.stdout.flush()
     try:
-        print 'uno'
-        sys.stdout.flush()
+        #print 'uno'
+        #sys.stdout.flush()
         conn = httplib.HTTPConnection(host)
-        print 'dos'
-        sys.stdout.flush()
+        #print 'dos'
+        #sys.stdout.flush()
         conn.request('HEAD', path)
-        print 'tres'
-        sys.stdout.flush()
+        #print 'tres'
+        #sys.stdout.flush()
         return conn.getresponse().status
     except StandardError:
         return None
     except httplib.HTTPException:
         return None
     except httplib.ImproperConnectionState:
-        print 'here it is'
-        sys.stdout.flush()
+        #print 'here it is'
+        #sys.stdout.flush()
         return None
 
 def check_url(url):
@@ -174,11 +174,11 @@ def check_url(url):
     """
     # see also http://stackoverflow.com/questions/2924422
     good_codes = [httplib.OK, httplib.FOUND, httplib.MOVED_PERMANENTLY]
-    print 'url is ' + url
-    sys.stdout.flush()
+    #print 'url is ' + url
+    #sys.stdout.flush()
     status = get_server_status_code(url)
-    print 'status ' + status
-    sys.stdout.flush()
+    #print 'status ' + status
+    #sys.stdout.flush()
 
     return status in good_codes
 
