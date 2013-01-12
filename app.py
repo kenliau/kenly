@@ -5,6 +5,7 @@ import os
 import sqlite3
 import urlparse
 import httplib
+import sys
 import random
 import string
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
@@ -142,7 +143,11 @@ def get_server_status_code(url):
     # http://stackoverflow.com/questions/1140661
     host, path = urlparse.urlparse(url)[1:3]    # elems [1] and [2]
     try:
+        print 'uno'
+        sys.stdout.flush()
         conn = httplib.HTTPConnection(host)
+        print 'dos'
+        sys.stdout.flush()
         conn.request('HEAD', path)
         return conn.getresponse().status
     except StandardError:
@@ -151,6 +156,7 @@ def get_server_status_code(url):
         return None
     except httplib.ImproperConnectionState:
         print 'here it is'
+        sys.stdout.flush()
         return None
 
 def check_url(url):
