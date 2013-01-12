@@ -38,6 +38,9 @@ def add_urls():
         else:
             user_url = 'http://' + user_url
         valid_url = check_url(user_url)
+        print 'url is ' + user_url ' and it is ' + valid_url
+        sys.stdout.flush()
+
         if valid_url == False:
             broken_url = True
 
