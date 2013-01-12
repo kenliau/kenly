@@ -28,6 +28,10 @@ def add_urls():
     #flash('testing')
     if request.method == 'POST':
         user_url = request.form['url']
+        if user_url.startswith('http://') or user_url.startswith('https://'):
+            pass
+        else:
+            user_url = 'http://' + user_url
         valid_url = check_url(user_url)
         if valid_url == False:
             broken_url = True
@@ -39,17 +43,14 @@ def add_urls():
     #url is valid. Adding to database
     if user_url in url_dict:
         h = hotness_dict[user_url]
-        print h
         h = h + 1
         hotness_dict[user_url] = h
-        print hotness_dict[user_url]
         random_chars = url_dict[user_url]
         redirect_url = request.url_root + 'url/' + random_chars
 
     else:
         random_chars = random_characters()
         while random_chars in url_dict.values():
-            print 'random chars existed, recreate'
             random_chars = random_characters()
         url_dict[user_url] = random_chars
         hotness_dict[user_url] = 1
@@ -59,11 +60,9 @@ def add_urls():
 
 @app.route("/url/<string:redirect_id>/")
 def redirection(redirect_id):
-    print 'id is ' + redirect_id
 
     if redirect_id in url_dict.values():
         redirect_url = find_key(url_dict, redirect_id)
-        print 're_url is ' + redirect_url
         return redirect(redirect_url)
 
     else:
@@ -116,6 +115,8 @@ def get_server_status_code(url):
         conn.request('HEAD', path)
         return conn.getresponse().status
     except StandardError:
+        return None
+    except httplib.HTTPException:
         return None
 
 def check_url(url):
