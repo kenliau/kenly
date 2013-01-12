@@ -145,6 +145,9 @@ def get_server_status_code(url):
     """
     # http://stackoverflow.com/questions/1140661
     host, path = urlparse.urlparse(url)[1:3]    # elems [1] and [2]
+    print 'host ' + host
+    print 'path ' + path
+    sys.stdout.flush()
     try:
         print 'uno'
         sys.stdout.flush()
