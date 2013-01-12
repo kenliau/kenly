@@ -178,7 +178,7 @@ def check_url(url):
     #sys.stdout.flush()
     sys.stdout.flush("hi")
     status = get_server_status_code(url)
-    print 'status ' + status
+    print status
     sys.stdout.flush()
 
 
