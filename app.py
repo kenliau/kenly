@@ -177,10 +177,6 @@ def check_url(url):
     #print 'url is ' + url
     #sys.stdout.flush()
     status = get_server_status_code(url)
-    print status
-    sys.stdout.flush()
-
-
     return status in good_codes
 
 
