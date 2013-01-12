@@ -174,11 +174,11 @@ def check_url(url):
     """
     # see also http://stackoverflow.com/questions/2924422
     good_codes = [httplib.OK, httplib.FOUND, httplib.MOVED_PERMANENTLY]
-    #print 'url is ' + url
-    #sys.stdout.flush()
+    print 'url is ' + url
+    sys.stdout.flush()
     status = get_server_status_code(url)
-    #print 'status ' + status
-    #sys.stdout.flush()
+    print 'status ' + status
+    sys.stdout.flush()
 
     return status in good_codes
 
