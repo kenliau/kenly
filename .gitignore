@@ -39,4 +39,4 @@ nosetests.xml
 .DS_Store
 
 # Personal information
-admin.py
+#admin.py

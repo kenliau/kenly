@@ -1,0 +1,3 @@
+username = 'kenliau'
+password = 'viewlistofurls'
+SECRET_KEY = '\x9c\x0b\xd3\xbcC\x83y\xcba\x0f\xec\xc3\xa8\x9cOfP\x03NH\xdb\n?\x1a'
