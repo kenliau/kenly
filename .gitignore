@@ -40,3 +40,4 @@ nosetests.xml
 
 # Personal information
 admin.py
+.env

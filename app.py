@@ -7,7 +7,6 @@ import urlparse
 import httplib
 import random
 import string
-import admin
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 
 # configuration
