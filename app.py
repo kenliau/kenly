@@ -46,7 +46,7 @@ def add_urls():
         h = h + 1
         hotness_dict[user_url] = h
         random_chars = url_dict[user_url]
-        redirect_url = request.url_root + 'url/' + random_chars
+        redirect_url = request.url_root + random_chars
 
     else:
         random_chars = random_characters()
@@ -54,11 +54,11 @@ def add_urls():
             random_chars = random_characters()
         url_dict[user_url] = random_chars
         hotness_dict[user_url] = 1
-        redirect_url = request.url_root + 'url/' + random_chars
+        redirect_url = request.url_root + random_chars
 
     return render_template('result.html', result=result, url=user_url, redirect_url=redirect_url)
 
-@app.route("/url/<string:redirect_id>/")
+@app.route("/<string:redirect_id>/")
 def redirection(redirect_id):
 
     if redirect_id in url_dict.values():
