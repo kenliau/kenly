@@ -46,6 +46,25 @@ h3 a:visited, h3 a:link {
     text-decoration: none;
 }
 
+.green {
+    color: #5BB75B;
+}
+
+a.origin:visited, a.origin:link {
+    text-decoration: none;
+}
+
+h2 a.redirect_url:visited, h2 a.redirect_url:link, h2 a.redirect_url:hover {
+
+    color: #5BB75B;
+    text-decoration: none;
+}
+
+.origin {
+    color: #6b6b6b;
+}
+
+
 
 .error {
     color: #DA4F49;

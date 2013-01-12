@@ -28,8 +28,14 @@
 
             <div>
                 <h2> 
-                    {{ url }} 
+                    <a class="redirect_url green" href="{{ redirect_url }}" target="_blank"> {{ redirect_url }} </a> 
                 </h2>
+            </div>
+
+            <div>
+                <h5 class="origin">
+                    <a class="origin" href="{{ url }}" target="_blank"> {{ url }} </a>
+                </h5>
             </div>
 
         </div>
