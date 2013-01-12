@@ -56,8 +56,6 @@ def add_urls():
         random_chars = random_characters()
         while random_chars in url_dict.values() or random_chars in app.config['RESERVED']:
             random_chars = random_characters()
-            
-            
         url_dict[user_url] = random_chars
         hotness_dict[user_url] = 1
         redirect_url = request.url_root + random_chars
@@ -70,7 +68,6 @@ def redirection(redirect_id):
     if redirect_id in url_dict.values():
         redirect_url = find_key(url_dict, redirect_id)
         return redirect(redirect_url)
-
     else:
         abort(404)
 
@@ -93,8 +90,6 @@ def login():
 def show_urls():
     if not session.get('logged_in'):
         return redirect(url_for('login'))
-
-    print url_dict
     return render_template('table.html', host=request.url_root, urls=url_dict, hotness=hotness_dict) 
 
 @app.route('/logout/')
@@ -111,7 +106,6 @@ def page_not_found(error):
 def page_not_found(error):
     return render_template('error.html'), 405
 
-
 def find_key(dic, val):
     return [k for k, v in dic.iteritems() if v == val][0]
 
@@ -120,6 +114,7 @@ def random_characters():
     n = random.choice('1234567')
     return ''.join(random.choice(string.letters) for i in range(int(n)))
 
+'''
 def init_db():
     with closing(connect_db()) as db:
         with app.open_resource('schema.sql') as f:
@@ -137,6 +132,7 @@ def before_request():
 def teardown_request(exception):
     if hasattr(g, 'db'):
         g.db.close()
+'''
 
 def get_server_status_code(url):
     """
