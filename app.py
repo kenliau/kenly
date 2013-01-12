@@ -7,15 +7,20 @@ import urlparse
 import httplib
 import random
 import string
+import admin
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 
 # configuration
 DATABASE = '/tmp/kenly.db'
+RESERVED = ['login', 'logout', 'result', 'list']
+#url_dict = {'http://www.google.com': 'login'}
+#hotness_dict = {'http://www.google.com': 1}
 url_dict = {}
 hotness_dict = {}
 
 app = Flask(__name__)
 app.config.from_object(__name__)
+app.config['SECRET_KEY'] = admin.SECRET_KEY
 
 @app.route("/")
 def index():
@@ -50,8 +55,10 @@ def add_urls():
 
     else:
         random_chars = random_characters()
-        while random_chars in url_dict.values():
+        while random_chars in url_dict.values() or random_chars in app.config['RESERVED']:
             random_chars = random_characters()
+            
+            
         url_dict[user_url] = random_chars
         hotness_dict[user_url] = 1
         redirect_url = request.url_root + random_chars
@@ -67,6 +74,35 @@ def redirection(redirect_id):
 
     else:
         abort(404)
+
+@app.route('/login/', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        if request.form['username'] != admin.username:
+            error = 'Invalid username'
+        elif request.form['password'] != admin.password:
+            error = 'Invalid password'
+        else:
+            session['logged_in'] = True
+            #shows table of urls
+            return redirect(url_for('show_urls'))
+    return render_template('login.html', error=error)
+
+
+@app.route('/list/')
+def show_urls():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+
+    print url_dict
+    return render_template('table.html', host=request.url_root, urls=url_dict, hotness=hotness_dict) 
+
+@app.route('/logout/')
+def logout():
+    # remove the username from the session if it's there
+    session.pop('logged_in', None)
+    return redirect(url_for('index'))
 
 @app.errorhandler(404)
 def page_not_found(error):

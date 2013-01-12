@@ -9,6 +9,7 @@
         <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
         <link href="{{ url_for('static', filename='bootstrap/css/bootstrap-responsive.min.css') }}" rel="stylesheet">
         <link href="{{ url_for('static', filename='css/app.css') }}" rel="stylesheet">
+
     </head>
 
     <body>
@@ -22,18 +23,18 @@
             <hr>
 
             <div class="center-container">
+                <h2>Login</h2>
+                    {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+                    <form action="{{ url_for('login') }}" method="post">
+                        <dl>
+                            <dt>Username:
+                            <dd><input type="text" name="username">
+                            <dt>Password:
+                            <dd><input type="password" name="password">
+                            <dd><input type="submit" value="Login">
+                        </dl>
+                    </form>
 
-                <h1> Enter the URL you want to be ken.lified ! </h1>
-
-                <form action="{{ url_for('add_urls') }}" method="post">
-                    <label class="url-label">
-                        URL: 
-                        <input type="text" name="url" class="input-large">
-                    </label>
-
-                    <input type="submit" class="btn btn-success submit-btn">
-
-                </form>
             </div>
 
             <hr>
@@ -45,7 +46,6 @@
         </div>
 
     </body>
-
 
 </html>
 

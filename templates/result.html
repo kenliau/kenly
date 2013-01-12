@@ -1,54 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title> Ken.ly </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="Kenny Liau">
+    <head>
+        <meta charset="utf-8">
+        <title> Ken.ly </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Kenny Liau">
 
-    <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='bootstrap/css/bootstrap-responsive.min.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/app.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='bootstrap/css/bootstrap-responsive.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='css/app.css') }}" rel="stylesheet">
 
-  </head>
+    </head>
 
-  <body>
+    <body>
 
-    <div class="main-container">
+        <div class="main-container">
 
-        <div class="main-title">
-            <h3> <a href="/">  Ken.ly  </a> </h3>
-        </div>
-
-        <hr>
-
-        <div class="center-container">
-
-            <h1> {{ result }}  </h1>
-
-            <div>
-                <h2> 
-                    <a class="redirect_url green" href="{{ redirect_url }}" target="_blank"> {{ redirect_url }} </a> 
-                </h2>
+            <div class="main-title">
+                <h3> <a href="/">  Ken.ly  </a> </h3>
             </div>
 
-            <div>
-                <h5 class="origin">
-                    <a class="origin" href="{{ url }}" target="_blank"> {{ url }} </a>
-                </h5>
+            <hr>
+
+            <div class="center-container">
+
+                <h1> {{ result }}  </h1>
+
+                <div>
+                    <h2> 
+                        <a class="redirect_url green" href="{{ redirect_url }}" target="_blank"> {{ redirect_url }} </a> 
+                    </h2>
+                </div>
+
+                <div>
+                    <h5 class="origin">
+                        <a class="origin" href="{{ url }}" target="_blank"> {{ url }} </a>
+                    </h5>
+                </div>
+
+            </div>
+
+            <hr>
+
+            <div class="footer">
+                <p>© Kenny Liau 2012</p>
             </div>
 
         </div>
 
-        <hr>
-
-        <div class="footer">
-            <p>© Kenny Liau 2012</p>
-        </div>
-
-    </div>
-
-  </body>
+    </body>
 
 
 </html>
