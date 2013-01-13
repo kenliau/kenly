@@ -33,13 +33,19 @@ def add_urls():
     if request.method == 'POST':
         user_url = request.form['url']
         if user_url.startswith('http://') or user_url.startswith('https://'):
-            pass
+            pass  
         else:
             user_url = 'http://' + user_url
 
-        temp = user_url[:4]
-        if request.url_root in user_url or request.url_root in user_url[:4]+user_url[5:]:
-            print 'LOOK HERE ' + request.url_root
+        if request.url_root.startswith('http://'):
+            domain = request.url_root[7:-3]
+        else if request.url_root.startswith('https://'):
+            domain = request.url_root[8:-3]
+
+
+        if domain in user_url:
+            print 'DOMAIN IS  ' + domain
+            
             valid_url = True
         else:
             valid_url = check_url(user_url)
