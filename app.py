@@ -37,7 +37,9 @@ def add_urls():
         else:
             user_url = 'http://' + user_url
 
-        if request.url_root in user_url or request.url_root in user_url[:4]+user_url[6:]:
+        temp = user_url[:4]
+        if request.url_root in user_url or request.url_root in user_url[:4]+user_url[5:]:
+            print 'LOOK HERE ' + request.url_root
             valid_url = True
         else:
             valid_url = check_url(user_url)
