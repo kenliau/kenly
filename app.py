@@ -15,8 +15,8 @@ DATABASE = '/tmp/kenly.db'
 RESERVED = ['login', 'logout', 'result', 'list']
 #url_dict = {'http://www.google.com': 'login'}
 #hotness_dict = {'http://www.google.com': 1}
-url_dict = {'http://kennyliau.com': 'k', 'http://goneill.net': 'g'}
-hotness_dict = {'http://kennyliau.com': 100, 'http://goneill.net': 1}
+url_dict = {'http://kennyliau.com': 'k', 'http://goneill.net': 'g', 'http://jreptak.com': 'j'}
+hotness_dict = {'http://kennyliau.com': 100, 'http://goneill.net': 1, 'http://jreptak.com': 1}
 
 app = Flask(__name__)
 app.config.from_object(__name__)
