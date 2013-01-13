@@ -38,9 +38,14 @@ def add_urls():
             user_url = 'http://' + user_url
 
         if request.url_root.startswith('http://'):
-            domain = request.url_root[7:-3]
+            domain = request.url_root[7:-1]
+        else if request.url_root.startswith('http://www.'):
+            domain = request.url_root[11:-1]
         else if request.url_root.startswith('https://'):
-            domain = request.url_root[8:-3]
+            domain = request.url_root[8:-1]
+        else if request.url_root.startswith('https://www.'):
+            domain = request.url_root[12:-1]
+
 
 
         if domain in user_url:
