@@ -39,11 +39,11 @@ def add_urls():
 
         if request.url_root.startswith('http://'):
             domain = request.url_root[7:-1]
-        else if request.url_root.startswith('http://www.'):
+        elif request.url_root.startswith('http://www.'):
             domain = request.url_root[11:-1]
-        else if request.url_root.startswith('https://'):
+        elif request.url_root.startswith('https://'):
             domain = request.url_root[8:-1]
-        else if request.url_root.startswith('https://www.'):
+        elif request.url_root.startswith('https://www.'):
             domain = request.url_root[12:-1]
 
 
