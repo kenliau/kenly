@@ -36,9 +36,11 @@ def add_urls():
             pass
         else:
             user_url = 'http://' + user_url
-        valid_url = check_url(user_url)
-        ##print 'url is ' + user_url + ' and it is ' + valid_url
-        #sys.stdout.flush()
+
+        if request.url_root in user_url:
+            valid_url = True
+        else:
+            valid_url = check_url(user_url)
 
         if valid_url == False:
             broken_url = True
@@ -138,46 +140,24 @@ def teardown_request(exception):
 """
 
 def get_server_status_code(url):
-    """
-    Download just the header of a URL and
-    return the server's status code.
-    """
     # http://stackoverflow.com/questions/1140661
     host, path = urlparse.urlparse(url)[1:3]    # elems [1] and [2]
-    #print 'host ' + host
-    #print 'path ' + path
-    #sys.stdout.flush()
     try:
-        #print 'uno'
-        #sys.stdout.flush()
         conn = httplib.HTTPConnection(host)
-        #print 'dos'
-        #sys.stdout.flush()
         conn.request('HEAD', path)
-        #print 'tres'
-        #sys.stdout.flush()
         return conn.getresponse().status
     except StandardError:
         return None
     except httplib.HTTPException:
         return None
     except httplib.ImproperConnectionState:
-        #print 'here it is'
-        #sys.stdout.flush()
         return None
 
 def check_url(url):
-    """
-    Check if a URL exists without downloading the whole file.
-    We only check the URL header.
-    """
     # see also http://stackoverflow.com/questions/2924422
     good_codes = [httplib.OK, httplib.FOUND, httplib.MOVED_PERMANENTLY]
-    #print 'url is ' + url
-    #sys.stdout.flush()
     status = get_server_status_code(url)
-    #print 'status ' + status
-    #sys.stdout.flush()
+    #print 'status is ' + str(status)
 
     return status in good_codes
 
