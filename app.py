@@ -7,29 +7,29 @@ import urlparse
 import httplib
 import random
 import string
+import admin
+import MySQLdb as mdb
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 
 # configuration
-DATABASE = '/tmp/kenly.db'
 RESERVED = ['login', 'logout', 'result', 'list']
-#url_dict = {'http://www.google.com': 'login'}
-#hotness_dict = {'http://www.google.com': 1}
-url_dict = {'http://kennyliau.com': 'k', 'http://goneill.net': 'g', 'http://jreptak.com': 'j'}
-hotness_dict = {'http://kennyliau.com': 100, 'http://goneill.net': 1, 'http://jreptak.com': 1}
+url_dict = {}
+hotness_dict = {}
 
 app = Flask(__name__)
 app.config.from_object(__name__)
-app.config['SECRET_KEY'] = os.environ['secret_key']
+app.config['SECRET_KEY'] = admin.secret_key#os.environ['secret_key']
 
 @app.route("/")
 def index():
+    setup_db()
     return render_template('index.html')
 
 @app.route("/result/", methods=['POST'])
 def add_urls():
+    setup_db()
     result = 'Here is your ken.lified URL!'
     broken_url = False
-    #flash('testing')
     if request.method == 'POST':
         user_url = request.form['url']
         if user_url.startswith('http://') or user_url.startswith('https://'):
@@ -37,28 +37,8 @@ def add_urls():
         else:
             user_url = 'http://' + user_url
 
-        print "REQUEST URL ROOT is " + request.url_root
-        if request.url_root.startswith('http://www.'):
-            domain = request.url_root[11:-1]
-        elif request.url_root.startswith('http://'):
-            domain = request.url_root[7:-1]
-        elif request.url_root.startswith('https://www.'):
-            domain = request.url_root[12:-1]
-        elif request.url_root.startswith('https://'):
-            domain = request.url_root[8:-1]
-        elif request.url_root.startswith('www.'):
-            domain = request.url_root[4:-1]
-    
-
-
-
-        if domain in user_url:
-            print 'DOMAIN IS  ' + domain
-            
-            valid_url = True
-        else:
-            valid_url = check_url(user_url)
-
+        valid_url = check_url(user_url)
+        
         if valid_url == False:
             broken_url = True
 
@@ -68,25 +48,22 @@ def add_urls():
 
     #url is valid. Adding to database
     if user_url in url_dict:
-        h = hotness_dict[user_url]
-        h = h + 1
-        hotness_dict[user_url] = h
-        random_chars = url_dict[user_url]
+        random_chars = update_db_hotness(user_url)
         redirect_url = request.url_root + random_chars
 
     else:
         random_chars = random_characters()
         while random_chars in url_dict.values() or random_chars in app.config['RESERVED']:
             random_chars = random_characters()
-        url_dict[user_url] = random_chars
-        hotness_dict[user_url] = 1
+        insert_to_db(user_url, random_chars)
+
         redirect_url = request.url_root + random_chars
 
     return render_template('result.html', result=result, url=user_url, redirect_url=redirect_url)
 
 @app.route("/<string:redirect_id>/")
 def redirection(redirect_id):
-
+    setup_db()
     if redirect_id in url_dict.values():
         redirect_url = find_key(url_dict, redirect_id)
         return redirect(redirect_url)
@@ -97,9 +74,9 @@ def redirection(redirect_id):
 def login():
     error = None
     if request.method == 'POST':
-        if request.form['username'] != os.environ['username']:
+        if request.form['username'] != admin.username:#os.environ['username']:
             error = 'Invalid username'
-        elif request.form['password'] != os.environ['password']:
+        elif request.form['password'] != admin.password:#os.environ['password']:
             error = 'Invalid password'
         else:
             session['logged_in'] = True
@@ -110,8 +87,9 @@ def login():
 
 @app.route('/list/')
 def show_urls():
-    if not session.get('logged_in'):
-        return redirect(url_for('login'))
+    setup_db()
+    #if not session.get('logged_in'):
+    #    return redirect(url_for('login'))
     return render_template('table.html', host=request.url_root, urls=url_dict, hotness=hotness_dict) 
 
 @app.route('/logout/')
@@ -136,25 +114,56 @@ def random_characters():
     n = random.choice('1234567')
     return ''.join(random.choice(string.letters) for i in range(int(n)))
 
-"""
-def init_db():
-    with closing(connect_db()) as db:
-        with app.open_resource('schema.sql') as f:
-            db.cursor().executescript(f.read())
+def setup_db():
+    SELECT_QUERY = "SELECT * FROM links"
+    db = mdb.connect(host="localhost", user="kenliau", db="kenliau")
+    cursor = db.cursor()
+    cursor.execute(SELECT_QUERY)
+    while True:
+        result = cursor.fetchone()
+        if not result: 
+            break
+        u = result[1]
+        r = result[2]
+        h = result[3]
+        url_dict[u] = r
+        hotness_dict[u] = int(h)
+
+    cursor.close()
+    db.close()
+
+def update_db_hotness(user_url):
+    db = mdb.connect(host="localhost", user="kenliau", db="kenliau")
+    cursor = db.cursor()
+    UPDATE_QUERY = """UPDATE links SET hotness = hotness + 1 WHERE url = %s"""
+    try:
+        cursor.execute(UPDATE_QUERY, (user_url))
         db.commit()
+    except:
+        db.rollback()
 
-def connect_db():
-    return sqlite3.connect(app.config['DATABASE'])
+    SELECT_QUERY = """SELECT redirect from links WHERE url = %s"""
+    cursor.execute(SELECT_QUERY, (user_url))
+    result = cursor.fetchone()
+    if result:
+        redirect = result[0]
+    cursor.close()
+    db.close()
+    return redirect
 
-@app.before_request
-def before_request():
-    g.db = connect_db()
+def insert_to_db(user_url, random):
+    db = mdb.connect(host="localhost", user="kenliau", db="kenliau")
+    cursor = db.cursor()
+    INSERT_QUERY = """INSERT INTO links (url, redirect, hotness) VALUES (%s, %s, %s)"""
+    try:
+        cursor.execute(INSERT_QUERY, (user_url, random, 1))
+        db.commit()
+    except:
+        db.rollback()
 
-@app.teardown_request
-def teardown_request(exception):
-    if hasattr(g, 'db'):
-        g.db.close()
-"""
+    cursor.close()
+    db.close()
+
 
 def get_server_status_code(url):
     # http://stackoverflow.com/questions/1140661
@@ -181,5 +190,6 @@ def check_url(url):
 
 if __name__ == "__main__":
   # Bind to PORT if defined, otherwise default to 5000.
-  port = int(os.environ.get('PORT', 5000))
-  app.run(host='0.0.0.0', port=port)
+  # port = int(os.environ.get('PORT', 5000))
+  # app.run(host='0.0.0.0', port=port)
+  app.run()
